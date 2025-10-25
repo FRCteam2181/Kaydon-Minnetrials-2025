@@ -5,25 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.CANRollerSubsystem;
+import frc.robot.subsystems.CANDriveSubsystem;
 import java.util.function.DoubleSupplier;
 
-// Command to run the roller with joystick inputs
-public class RollerCommand extends Command {
-  private final DoubleSupplier forward;
-  private final DoubleSupplier reverse;
-  // private final CANRollerSubsystem rollerSubsystem;
-  private final CANRollerSubsystem rollerSubsystem;
+// Command to drive the robot with joystick inputs
+public class DriveCommand extends Command {
+  private final DoubleSupplier xSpeed;
+  private final DoubleSupplier zRotation;
+  private final CANDriveSubsystem driveSubsystem;
 
-  public RollerCommand(
-      DoubleSupplier forward, DoubleSupplier reverse, CANRollerSubsystem rollerSubsystem) {
-    this.forward = forward;
-    this.reverse = reverse;
-    this.rollerSubsystem = rollerSubsystem;
+  // Constructor. Runs only once when the command is first created.
+  public DriveCommand(
+      DoubleSupplier xSpeed, DoubleSupplier zRotation, CANDriveSubsystem driveSubsystem) {
+    // Save parameters to local variables for use later
+    this.xSpeed = xSpeed;
+    this.zRotation = zRotation;
+    this.driveSubsystem = driveSubsystem;
 
-    addRequirements(this.rollerSubsystem);
+    // Declare subsystems required by this command. This should include any
+    // subsystem this command sets and output of
+    addRequirements(this.driveSubsystem);
   }
 
+  // Runs each time the command is scheduled.
   @Override
   public void initialize() {
   }
@@ -31,8 +35,7 @@ public class RollerCommand extends Command {
   // Runs every cycle while the command is scheduled (~50 times per second)
   @Override
   public void execute() {
-    // Run the roller motor at the desired speed
-    rollerSubsystem.runRoller(forward.getAsDouble(), reverse.getAsDouble());
+    driveSubsystem.arcadeDrive(xSpeed.getAsDouble(), zRotation.getAsDouble());
   }
 
   // Runs each time the command ends via isFinished or being interrupted.

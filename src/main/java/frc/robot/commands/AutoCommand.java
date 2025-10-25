@@ -4,51 +4,56 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CANDriveSubsystem;
-import java.util.function.DoubleSupplier;
 
-// Command to drive the robot with joystick inputs
-public class DriveCommand extends Command {
-  private final DoubleSupplier xSpeed;
-  private final DoubleSupplier zRotation;
-  private final CANDriveSubsystem driveSubsystem;
+// Command to run the robot at 1/2 power for 1 second in autonomous
+public class AutoCommand extends Command {
+  CANDriveSubsystem driveSubsystem;
+  private Timer timer;
+  private double seconds = 1.0;
 
   // Constructor. Runs only once when the command is first created.
-  public DriveCommand(
-      DoubleSupplier xSpeed, DoubleSupplier zRotation, CANDriveSubsystem driveSubsystem) {
-    // Save parameters to local variables for use later
-    this.xSpeed = xSpeed;
-    this.zRotation = zRotation;
+  public AutoCommand(CANDriveSubsystem driveSubsystem) {
+    // Save parameter for use later and initialize timer object.
     this.driveSubsystem = driveSubsystem;
+    timer = new Timer();
 
     // Declare subsystems required by this command. This should include any
     // subsystem this command sets and output of
-    addRequirements(this.driveSubsystem);
+    addRequirements(driveSubsystem);
   }
 
-  // Runs each time the command is scheduled.
+  // Runs each time the command is scheduled. For this command, we handle starting
+  // the timer.
   @Override
   public void initialize() {
+    // start timer, uses restart to clear the timer as well in case this command has
+    // already been run before
+    timer.restart();
   }
 
   // Runs every cycle while the command is scheduled (~50 times per second)
   @Override
   public void execute() {
-    driveSubsystem.driveArcade(xSpeed.getAsDouble(), zRotation.getAsDouble());
+    // drive at 1/2 speed
+    driveSubsystem.arcadeDrive(0.5, 0.0);
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
   @Override
   public void end(boolean isInterrupted) {
+    // stop drive motors
+    driveSubsystem.arcadeDrive(0.0, 0.0);
   }
 
   // Runs every cycle while the command is scheduled to check if the command is
   // finished
   @Override
   public boolean isFinished() {
-    // Return false to indicate that this command never ends. It can be interrupted
-    // by another command needing the same subsystem.
-    return false;
+    // check if timer exceeds seconds, when it has this will return true indicating
+    // this command is finished
+    return timer.get() >= seconds;
   }
 }
