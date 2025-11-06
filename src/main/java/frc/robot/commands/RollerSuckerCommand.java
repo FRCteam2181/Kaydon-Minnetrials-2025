@@ -9,13 +9,13 @@ import frc.robot.subsystems.CANRollerSubsystem;
 import java.util.function.DoubleSupplier;
 
 // Command to run the roller with joystick inputs
-public class RollerCommand extends Command {
+public class RollerSuckerCommand extends Command {
   private final DoubleSupplier forward;
   private final DoubleSupplier reverse;
   // private final CANRollerSubsystem rollerSubsystem;
   private final CANRollerSubsystem rollerSubsystem;
 
-  public RollerCommand(
+  public RollerSuckerCommand(
       DoubleSupplier forward, DoubleSupplier reverse, CANRollerSubsystem rollerSubsystem) {
     this.forward = forward;
     this.reverse = reverse;
@@ -32,12 +32,13 @@ public class RollerCommand extends Command {
   @Override
   public void execute() {
     // Run the roller motor at the desired speed
-    rollerSubsystem.runRoller(forward.getAsDouble(), reverse.getAsDouble());
+    rollerSubsystem.runRollerSucker(forward.getAsDouble(), reverse.getAsDouble());
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
   @Override
   public void end(boolean isInterrupted) {
+    rollerSubsystem.runEnd(null, null);
   }
 
   // Runs every cycle while the command is scheduled to check if the command is

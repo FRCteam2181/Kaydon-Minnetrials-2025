@@ -12,7 +12,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.RollerCommand;
+import frc.robot.commands.RollerSuckerCommand;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANRollerSubsystem;
 
@@ -74,7 +74,10 @@ public class RobotContainer {
 
     // before
     operatorController.a()
-        .whileTrue(new RollerCommand(() -> RollerConstants.ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
+        .whileTrue(new RollerSuckerCommand(() -> RollerConstants.BOTTOM_ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
+    
+    operatorController.b()
+        .whileTrue(new RollerSuckerCommand(() -> RollerConstants.TOP_ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
@@ -91,7 +94,7 @@ public class RobotContainer {
     // Set the default command for the roller subsystem to an instance of
     // RollerCommand with the values provided by the triggers on the operator
     // controller
-    rollerSubsystem.setDefaultCommand(new RollerCommand(
+    rollerSubsystem.setDefaultCommand(new RollerSuckerCommand(
         () -> operatorController.getRightTriggerAxis(),
         () -> operatorController.getLeftTriggerAxis(),
         rollerSubsystem));
