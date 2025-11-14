@@ -75,10 +75,10 @@ public class RobotContainer {
 
     // before
     operatorController.a()
-        .whileTrue(new RollerSuckerCommand(() -> RollerConstants.SUCKER_ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
+        .whileTrue(new RollerSuckerCommand(() -> RollerConstants.SUCKER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem));
     
     operatorController.b()
-        .whileTrue(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
+        .whileTrue(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem));
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
@@ -95,7 +95,7 @@ public class RobotContainer {
     // Set the default command for the roller subsystem to an instance of
     // RollerCommand with the values provided by the triggers on the operator
     // controller
-    rollerSubsystem.setDefaultCommand(new RollerSuckerCommand(
+    rollerSubsystem.setDefaultCommand(new RollerSpitterCommand(
         () -> 0,
         () -> 0,
         rollerSubsystem));

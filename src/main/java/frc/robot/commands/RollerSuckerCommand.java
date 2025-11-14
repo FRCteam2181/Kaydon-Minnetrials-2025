@@ -38,7 +38,6 @@ public class RollerSuckerCommand extends Command {
   // Runs each time the command ends via isFinished or being interrupted.
   @Override
   public void end(boolean isInterrupted) {
-    rollerSubsystem.runEnd(null, null);
   }
 
   // Runs every cycle while the command is scheduled to check if the command is

@@ -28,14 +28,14 @@ public final class Constants {
 
   public static final class RollerConstants {
     public static final int BOTTOM_ROLLER_MOTOR_ID = 5;
-    public static final int BOTTOM_ROLLER_MOTOR_CURRENT_LIMIT = 60;
+    public static final int BOTTOM_ROLLER_MOTOR_CURRENT_LIMIT = 80;
     public static final double BOTTOM_ROLLER_MOTOR_VOLTAGE_COMP = 10;
-    public static final double SPITTER_ROLLER_EJECT_VALUE = 0.44;
+    public static final double SPITTER_ROLLER_EJECT_VALUE = 0.5;
 
-    public static final int TOP_ROLLER_MOTOR_ID = 5;
-    public static final int ROLLER_MOTOR_CURRENT_LIMIT = 60;
+    public static final int TOP_ROLLER_MOTOR_ID = 6;
+    public static final int ROLLER_MOTOR_CURRENT_LIMIT = 80;
     public static final double ROLLER_MOTOR_VOLTAGE_COMP = 10;
-    public static final double SUCKER_ROLLER_EJECT_VALUE = 0.44;
+    public static final double SUCKER_ROLLER_EJECT_VALUE = 0.5;
   }
 
   public static final class OperatorConstants {

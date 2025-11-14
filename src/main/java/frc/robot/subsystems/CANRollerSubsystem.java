@@ -19,8 +19,8 @@ public class CANRollerSubsystem extends SubsystemBase {
 
   public CANRollerSubsystem() {
     // Set up the roller motor as a brushed motor
-    rollerMotorTop = new SparkMax(RollerConstants.TOP_ROLLER_MOTOR_ID, MotorType.kBrushed);
-    rollerMotorBottom = new SparkMax(RollerConstants.BOTTOM_ROLLER_MOTOR_ID, MotorType.kBrushed);
+    rollerMotorTop = new SparkMax(RollerConstants.TOP_ROLLER_MOTOR_ID, MotorType.kBrushless);
+    rollerMotorBottom = new SparkMax(RollerConstants.BOTTOM_ROLLER_MOTOR_ID, MotorType.kBrushless);
 
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
@@ -35,8 +35,8 @@ public class CANRollerSubsystem extends SubsystemBase {
     SparkMaxConfig rollerConfig = new SparkMaxConfig();
     rollerConfig.voltageCompensation(RollerConstants.ROLLER_MOTOR_VOLTAGE_COMP);
     rollerConfig.smartCurrentLimit(RollerConstants.ROLLER_MOTOR_CURRENT_LIMIT);
-    rollerMotorTop.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rollerMotorBottom.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rollerMotorTop.configure(rollerConfig.inverted(true), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
