@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -52,7 +53,15 @@ public class RobotContainer {
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Autonomous", new AutoCommand(driveSubsystem));
+    autoChooser.setDefaultOption("AutoBestCaseBlue", new DriveCommand(() -> 0.5, () -> 0, driveSubsystem).withTimeout(3.5)
+    .andThen(new DriveCommand(() -> 0, () -> 0.5, driveSubsystem).withTimeout(0.5))    
+    .andThen(new DriveCommand(() -> 0.5, () -> 0, driveSubsystem).withTimeout(1.5))
+    .andThen(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_TOP_EJECT_VALUE, () -> 0.0, () -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem).withTimeout(1)));
+    autoChooser.addOption("AutoBestCaseRed", new DriveCommand(() -> 0.5, () -> 0, driveSubsystem).withTimeout(3.5)
+    .andThen(new DriveCommand(() -> 0, () -> -0.5, driveSubsystem).withTimeout(0.5))    
+    .andThen(new DriveCommand(() -> 0.5, () -> 0, driveSubsystem).withTimeout(1.5))
+    .andThen(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_TOP_EJECT_VALUE, () -> 0.0, () -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem).withTimeout(1)));
+    SmartDashboard.putData(autoChooser);
   }
 
   /**
@@ -74,11 +83,11 @@ public class RobotContainer {
     // value ejecting the gamepiece while the button is held
 
     // before
-    operatorController.a()
+    operatorController.button(1)
         .whileTrue(new RollerSuckerCommand(() -> RollerConstants.SUCKER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem));
     
-    operatorController.b()
-        .whileTrue(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem));
+    operatorController.button(3)
+        .whileTrue(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_TOP_EJECT_VALUE, () -> 0.0, () -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem));
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
@@ -98,6 +107,8 @@ public class RobotContainer {
     rollerSubsystem.setDefaultCommand(new RollerSpitterCommand(
         () -> 0,
         () -> 0,
+        () -> 0,
+        () -> 0,
         rollerSubsystem));
   }
 
@@ -109,5 +120,16 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autoChooser.getSelected();
+    // return new DriveCommand(() -> 0.5, () -> 0, driveSubsystem).withTimeout(3.5)
+    //                         .andThen(new DriveCommand(() -> 0, () -> 0.5, driveSubsystem).withTimeout(0.5))    
+    //                         .andThen(new DriveCommand(() -> 0.5, () -> 0, driveSubsystem).withTimeout(1.5))
+    //                         .andThen(new RollerSpitterCommand(() -> RollerConstants.SPITTER_ROLLER_TOP_EJECT_VALUE, () -> 0.0, () -> RollerConstants.SPITTER_ROLLER_EJECT_VALUE, () -> 0.0, rollerSubsystem).withTimeout(1));
+                            
+
+    // to drive: new RunCommand(() -> driveSubsystem.arcadeDrive(forward_speed,rotation)).withTimeout(seconds);
+    // to use subsystem: rollerSubsystem.doWhatever(parameters);
+    // add another command after:use .andThen()
+    // example: return new RunCommand(() -> driveSubsystem.arcadeDrive(speed,rotation)).withTimeout(seconds)
+    //                      .andThen(rollerSubsystem.doWhatever(parameters).withTimeout(seconds));
   }
 }

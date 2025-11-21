@@ -45,9 +45,9 @@ public class CANRollerSubsystem extends SubsystemBase {
   }
 
   /** This is a method that makes the roller spin */
-  public void runRollerSpitter(double forward, double reverse) {
-    rollerMotorTop.set(forward - reverse);
-    rollerMotorBottom.set(forward - reverse);
+  public void runRollerSpitter(double topForward, double topReverse, double bottomForward, double bottomReverse) {
+    rollerMotorTop.set(topForward - topReverse);
+    rollerMotorBottom.set(bottomForward - bottomReverse);
   }
 
   public void runRollerSucker(double forward, double reverse) {
